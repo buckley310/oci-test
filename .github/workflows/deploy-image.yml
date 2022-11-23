@@ -6,8 +6,6 @@ on:
       - main
 
 env:
-  VERSION: latest
-  IMAGE_NAME: oci-test
   IMAGE_ID: ghcr.io/${{ github.repository_owner }}/oci-test
 
 jobs:
@@ -20,6 +18,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: docker login ghcr.io -u $ --password-stdin <<<"${{ secrets.GITHUB_TOKEN }}"
-      - run: docker build --tag "$IMAGE_NAME" .
-      - run: docker tag "$IMAGE_NAME" "$IMAGE_ID:$VERSION"
-      - run: docker push "$IMAGE_ID:$VERSION"
+      - run: docker build --tag foo .
+      - run: docker tag foo "$IMAGE_ID:latest"
+      - run: docker push "$IMAGE_ID:latest"
