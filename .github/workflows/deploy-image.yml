@@ -8,6 +8,7 @@ on:
 env:
   VERSION: latest
   IMAGE_NAME: oci-test
+  IMAGE_ID: ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME
 
 jobs:
   build-container:
@@ -24,8 +25,6 @@ jobs:
           set -eux
 
           echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
-
-          IMAGE_ID=ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME
 
           docker build --tag "$IMAGE_NAME" .
           docker tag "$IMAGE_NAME" "$IMAGE_ID:$VERSION"
