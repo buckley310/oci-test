@@ -1,5 +1,7 @@
 name: Deploy Image
 
+# https://docs.docker.com/build/ci/github-actions/examples/
+
 on:
   push:
     branches:
@@ -15,19 +17,15 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Login
-        uses: docker/login-action@v2
+      - uses: docker/login-action@v2
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build
-        run: docker build --tag img .
-
-      - name: Push
-        run: |
-          IMAGE_ID="ghcr.io/${{ github.repository_owner }}/oci-test"
-          TAG="latest"
-          docker tag img "$IMAGE_ID:$TAG"
-          docker push    "$IMAGE_ID:$TAG"
+      - uses: docker/build-push-action@v3
+        with:
+          context: .
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/oci-test:latest
