@@ -19,10 +19,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Build
+      - name: Build and Push
         run: |
           set -eux
-          echo "ref ${{ github.ref }}"
 
           echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
 
