@@ -19,13 +19,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-
-      - name: Build and Push
-        run: |
-          set -eux
-
-          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
-
-          docker build --tag "$IMAGE_NAME" .
-          docker tag "$IMAGE_NAME" "$IMAGE_ID:$VERSION"
-          docker push "$IMAGE_ID:$VERSION"
+      - run: set -eux
+      - run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
+      - run: docker build --tag "$IMAGE_NAME" .
+      - run: docker tag "$IMAGE_NAME" "$IMAGE_ID:$VERSION"
+      - run: docker push "$IMAGE_ID:$VERSION"
