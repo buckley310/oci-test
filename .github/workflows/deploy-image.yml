@@ -3,16 +3,38 @@ name: Deploy Image
 on:
   push:
     branches:
-      - "main"
+      - main
+
+env:
+  IMAGE_NAME: oci-test
 
 jobs:
   build-container:
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+    permissions:
+      packages: write
+      contents: read
 
-      - name: Test
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Build
         run: |
-          ls -la
-          env
+          set -eux
+          echo "ref ${{ github.ref }}"
+
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
+          IMAGE_ID=ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME
+
+          # Strip git ref prefix from version
+          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+
+          # Strip "v" prefix from tag name
+          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+
+          # Use Docker `latest` tag convention
+          [ "$VERSION" == "master" ] && VERSION=latest
+          echo IMAGE_ID=$IMAGE_ID
+          echo VERSION=$VERSION
+          docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
+          docker push $IMAGE_ID:$VERSION
