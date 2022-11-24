@@ -28,4 +28,4 @@ jobs:
           context: .
           push: true
           tags: |
-            ghcr.io/${{ github.repository_owner }}/oci-test2:latest
+            ghcr.io/${{ github.repository_owner }}/${{ github.repository }}:latest
