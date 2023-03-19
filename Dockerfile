@@ -1,9 +1,22 @@
-FROM nixos/nix as nsjailbin
-RUN mkdir -p /export/store
-RUN nix --extra-experimental-features 'nix-command flakes' build nixpkgs#nsjail -o /export/.nsjail
-RUN ln -s .nsjail/bin/nsjail /export/nsjail
-RUN cp -a $(nix-store --query --requisites /export/.nsjail) /export/store/
-
 FROM ubuntu:22.04
-COPY --from=nsjailbin /export /nix
-RUN useradd -m -u 1000 chal
+
+RUN apt-get -y update && apt-get install -y \
+    autoconf \
+    bison \
+    flex \
+    gcc \
+    g++ \
+    git \
+    libprotobuf-dev \
+    libnl-route-3-dev \
+    libtool \
+    make \
+    pkg-config \
+    protobuf-compiler \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN git clone --branch 3.3 https://github.com/google/nsjail.git
+
+RUN cd /nsjail && make && mv /nsjail/nsjail /bin && rm -rf -- /nsjail
+
+# https://github.com/google/nsjail/blob/master/Dockerfile
