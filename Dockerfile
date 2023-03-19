@@ -6,3 +6,4 @@ RUN cp -a $(nix-store --query --requisites /export/.nsjail) /export/store/
 
 FROM ubuntu:22.04
 COPY --from=nsjailbin /export /nix
+RUN useradd -m -u 1000 chal
