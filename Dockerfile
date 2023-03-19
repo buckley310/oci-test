@@ -19,4 +19,6 @@ RUN git clone --branch 3.3 https://github.com/google/nsjail.git
 
 RUN cd /nsjail && make && mv /nsjail/nsjail /bin && rm -rf -- /nsjail
 
+RUN useradd -m -u 1000 chal
+
 # https://github.com/google/nsjail/blob/master/Dockerfile
