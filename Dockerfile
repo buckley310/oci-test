@@ -1,5 +1,6 @@
-FROM ubuntu:22.04 as chroot
-RUN /usr/sbin/useradd -u 1000 user
+FROM nixos/nix as nsjailbin
+RUN nix --extra-experimental-features 'nix-command flakes' build nixpkgs#nsjail -o /nsjail
 
-FROM ghcr.io/google/nsjail/nsjail:latest
-COPY --from=chroot / /chroot
+FROM ubuntu:22.04
+COPY --from=nsjailbin /nix /
+COPY --from=nsjailbin /nsjail /
