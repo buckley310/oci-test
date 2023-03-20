@@ -19,7 +19,7 @@ RUN git clone --branch 3.3 https://github.com/google/nsjail.git
 
 RUN cd /nsjail && make && mv /nsjail/nsjail /bin && rm -rf -- /nsjail
 
-RUN apt install -y curl uidmap
+RUN apt-get install -y curl uidmap
 RUN useradd -m -u 1000 chal
 
 # https://github.com/google/nsjail/blob/master/Dockerfile
