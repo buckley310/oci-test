@@ -29,9 +29,6 @@ COPY --from=chal / /chroot
 
 RUN useradd -m sbox
 
-RUN echo root:3000:2000 | tee --append /etc/subuid >>/etc/subgid
-RUN echo sbox:5000:2000 | tee --append /etc/subuid >>/etc/subgid
-
 RUN apt install -y uidmap htop
 
 # https://github.com/google/nsjail/blob/master/Dockerfile
