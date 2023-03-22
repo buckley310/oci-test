@@ -27,5 +27,6 @@ RUN cd /nsjail && make && mv /nsjail/nsjail /bin && rm -rf -- /nsjail
 RUN apt install -y curl iproute2 iputils-ping htop
 
 COPY --from=chal / /chroot
+RUN chown 5000:5000 /chroot/home/chal
 
 # https://github.com/google/nsjail/blob/master/Dockerfile
