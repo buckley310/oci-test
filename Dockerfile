@@ -1,7 +1,7 @@
 FROM ubuntu:22.04 as chal
 
 RUN apt update
-RUN apt install -y curl iproute2 iputils-ping uidmap htop
+RUN apt install -y curl iproute2 iputils-ping htop
 RUN useradd -m -u 1000 chal
 
 FROM ubuntu:22.04
@@ -24,7 +24,7 @@ RUN git clone --branch 3.3 https://github.com/google/nsjail.git
 
 RUN cd /nsjail && make && mv /nsjail/nsjail /bin && rm -rf -- /nsjail
 
-RUN apt install -y curl iproute2 iputils-ping uidmap htop
+RUN apt install -y curl iproute2 iputils-ping htop
 
 COPY --from=chal / /chroot
 
