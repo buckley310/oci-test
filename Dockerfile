@@ -1,8 +1,9 @@
 FROM ubuntu:22.04 as chal
 
 RUN apt update
-RUN apt install -y curl iproute2 iputils-ping htop
-RUN useradd -m -u 1000 chal
+RUN apt install -y iproute2
+RUN useradd -m chal
+
 
 FROM ubuntu:22.04
 
@@ -24,9 +25,7 @@ RUN git clone --branch 3.3 https://github.com/google/nsjail.git
 
 RUN cd /nsjail && make && mv /nsjail/nsjail /bin && rm -rf -- /nsjail
 
-RUN apt install -y curl iproute2 iputils-ping htop
-
 COPY --from=chal / /chroot
-RUN chown 5000:5000 /chroot/home/chal
+RUN chown -R 5000:5000 /chroot/home/chal
 
 # https://github.com/google/nsjail/blob/master/Dockerfile
