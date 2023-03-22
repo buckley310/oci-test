@@ -2,7 +2,7 @@ FROM ubuntu:22.04 as chal
 
 RUN apt update
 RUN apt install -y iproute2
-RUN useradd -m -u1000 -U -g1000 chal
+RUN useradd -m chal
 
 
 FROM ubuntu:22.04
@@ -27,7 +27,7 @@ RUN cd /nsjail && make && mv /nsjail/nsjail /bin && rm -rf -- /nsjail
 
 COPY --from=chal / /chroot
 
-RUN useradd -m -u1000 -U -g1000 sbox
+RUN useradd -m sbox
 
 RUN echo root:3000:2000 | tee --append /etc/subuid >>/etc/subgid
 RUN echo sbox:5000:2000 | tee --append /etc/subuid >>/etc/subgid
