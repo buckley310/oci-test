@@ -2,7 +2,7 @@ FROM ubuntu:22.04 as chal
 
 RUN apt update
 RUN apt install -y iproute2
-RUN useradd -m chal
+RUN useradd -m -u1000 -U1000 chal
 
 
 FROM ubuntu:22.04
@@ -26,7 +26,11 @@ RUN git clone --branch 3.3 https://github.com/google/nsjail.git
 RUN cd /nsjail && make && mv /nsjail/nsjail /bin && rm -rf -- /nsjail
 
 COPY --from=chal / /chroot
-RUN chown -R 5000:5000 /chroot/home/chal
+
+RUN useradd -m -u1000 -U1000 sandbox
+
+RUN echo root:3000:2000
+RUN echo sandbox:5000:2000
 
 RUN apt install -y uidmap htop
 
