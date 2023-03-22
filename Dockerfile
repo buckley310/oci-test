@@ -28,4 +28,6 @@ RUN cd /nsjail && make && mv /nsjail/nsjail /bin && rm -rf -- /nsjail
 COPY --from=chal / /chroot
 RUN chown -R 5000:5000 /chroot/home/chal
 
+RUN apt install -y htop
+
 # https://github.com/google/nsjail/blob/master/Dockerfile
