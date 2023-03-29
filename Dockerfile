@@ -1,8 +1,7 @@
 FROM ubuntu:22.04 as chal
-
-RUN apt update
-RUN apt install -y iproute2
 RUN useradd -m chal
+RUN echo "/bin/sh +m -i" >/init.sh && chmod +x /init.sh
+
 
 
 FROM ubuntu:22.04
@@ -27,8 +26,14 @@ RUN cd /nsjail && make && mv /nsjail/nsjail /bin && rm -rf -- /nsjail
 
 COPY --from=chal / /chroot
 
-RUN useradd -m sbox
+RUN   cd /chroot/dev        \
+      mknod null c 1 3      \
+      mknod random c 1 8    \
+      mknod urandom c 1 9   \
+      mknod zero c 1 5      \
+      chmod a+w null        \
+      mkdir shm
 
-RUN apt install -y uidmap htop
+RUN apt install -y htop
 
 # https://github.com/google/nsjail/blob/master/Dockerfile
