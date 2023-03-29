@@ -31,8 +31,7 @@ RUN   cd /chroot/dev        && \
       mknod random c 1 8    && \
       mknod urandom c 1 9   && \
       mknod zero c 1 5      && \
-      chmod a+w null        && \
-      mkdir shm
+      chmod a+w null
 
 RUN apt install -y htop
 
