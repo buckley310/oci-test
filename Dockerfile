@@ -1,6 +1,6 @@
 FROM ubuntu:22.04 as chal
 RUN useradd -m chal
-RUN echo "/bin/sh +m -i" >/init.sh && chmod +x /init.sh
+RUN echo "/bin/sh +m -i" >/init.sh
 
 
 
